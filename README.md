@@ -52,12 +52,12 @@ This creates and/or migrates:
 2. Create/update `.env.local`:
 
 ```bash
-SUPABASE_URL=https://your-project-ref.supabase.co
-SUPABASE_ANON_KEY=your_anon_key
-GEMINI_API_KEY=your_gemini_api_key
+VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+VITE_SUPABASE_ANON_KEY=your_anon_key
+VITE_GEMINI_API_KEY=your_gemini_api_key
 ```
 
-`GEMINI_API_KEY` is optional. Without it, the app uses a fallback suggestion message.
+`VITE_GEMINI_API_KEY` is optional. Without it, the app uses a fallback suggestion message.
 
 3. Start development server:
    - `npm run dev`

@@ -2,8 +2,8 @@ import { GoogleGenAI } from "@google/genai";
 import { createClient } from "@supabase/supabase-js";
 import { PublicFlower, MessageData, CreateMessageResponse, MessageViewData } from "../types";
 
-const SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 interface FlowerRow {
   id: string;
@@ -29,7 +29,7 @@ interface MessageByTokenRow extends FlowerRow {
 
 const getSupabaseConfig = () => {
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-    throw new Error("Missing Supabase config. Set SUPABASE_URL and SUPABASE_ANON_KEY in .env.local.");
+    throw new Error("Missing Supabase config. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env.local.");
   }
   return { url: SUPABASE_URL, anonKey: SUPABASE_ANON_KEY };
 };
@@ -92,7 +92,7 @@ export const getMessageByToken = async (token: string): Promise<MessageViewData 
 
 export const getKindnessSuggestion = async (): Promise<string> => {
   try {
-    const apiKey = process.env.API_KEY;
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
     if (!apiKey) {
       return "You are a wonderful friend and your kindness makes the world brighter.";
     }
