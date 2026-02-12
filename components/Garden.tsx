@@ -8,10 +8,17 @@ import { PublicFlower } from '../types';
 const Garden: React.FC = () => {
   const [flowers, setFlowers] = useState<PublicFlower[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const refreshFlowers = async () => {
-    const data = await getPublicFlowers();
-    setFlowers(data);
+    try {
+      const data = await getPublicFlowers();
+      setFlowers(data);
+      setLoadError(null);
+    } catch (error) {
+      setLoadError(error instanceof Error ? error.message : "Failed to load garden data.");
+      setFlowers([]);
+    }
   };
 
   useEffect(() => {
@@ -45,6 +52,11 @@ const Garden: React.FC = () => {
         {/* Hero Section */}
         <div className="relative w-full py-12 px-6 md:px-20">
           <div className="max-w-4xl mx-auto text-center space-y-6">
+            {loadError && (
+              <div className="mx-auto max-w-2xl rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {loadError}
+              </div>
+            )}
             <h2 className="text-4xl md:text-6xl font-black text-text-main leading-[1.1] tracking-tight">
               Watch the World Bloom <br/><span className="text-primary">One Kind Note at a Time.</span>
             </h2>

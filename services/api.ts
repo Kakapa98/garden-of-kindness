@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { createClient } from "@supabase/supabase-js";
+import { SupabaseClient } from "@supabase/supabase-js";
 import { PublicFlower, MessageData, CreateMessageResponse, MessageViewData } from "../types";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
@@ -34,8 +35,13 @@ const getSupabaseConfig = () => {
   return { url: SUPABASE_URL, anonKey: SUPABASE_ANON_KEY };
 };
 
-const { url, anonKey } = getSupabaseConfig();
-export const supabase = createClient(url, anonKey);
+let supabaseClient: SupabaseClient | null = null;
+const getSupabase = (): SupabaseClient => {
+  if (supabaseClient) return supabaseClient;
+  const { url, anonKey } = getSupabaseConfig();
+  supabaseClient = createClient(url, anonKey);
+  return supabaseClient;
+};
 
 const mapFlowerRow = (row: FlowerRow): PublicFlower => ({
   id: row.id,
@@ -48,6 +54,7 @@ const mapFlowerRow = (row: FlowerRow): PublicFlower => ({
 });
 
 export const getPublicFlowers = async (): Promise<PublicFlower[]> => {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from("flowers")
     .select("id,x_position,y_position,color_hex,visual_type,scale,bloom_delay")
@@ -59,6 +66,7 @@ export const getPublicFlowers = async (): Promise<PublicFlower[]> => {
 };
 
 export const plantFlower = async (data: MessageData): Promise<CreateMessageResponse> => {
+  const supabase = getSupabase();
   const { data: rows, error } = await supabase.rpc("plant_message", {
     p_sender_name: data.sender,
     p_recipient_name: data.recipient,
@@ -73,6 +81,7 @@ export const plantFlower = async (data: MessageData): Promise<CreateMessageRespo
 };
 
 export const getMessageByToken = async (token: string): Promise<MessageViewData | null> => {
+  const supabase = getSupabase();
   const { data: rows, error } = await supabase.rpc("get_message_by_token", { p_access_token: token });
   if (error) throw new Error(error.message);
 
