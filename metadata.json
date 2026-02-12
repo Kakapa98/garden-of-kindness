@@ -1,0 +1,5 @@
+{
+  "name": "Garden of Kindness",
+  "description": "A digital garden where users can plant kindness messages represented by blooming flowers. Messages are private and accessible only via secure links.",
+  "requestFramePermissions": []
+}
