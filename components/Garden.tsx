@@ -126,7 +126,7 @@ const Garden: React.FC = () => {
         <div className="bg-white rounded-xl shadow-xl border border-primary/20 p-5 flex flex-col gap-1 max-w-[200px]">
           <p className="text-text-main text-xs font-bold uppercase tracking-widest opacity-60">Today's Blooms</p>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-black text-text-main">{flowers.length + 2}</span>
+            <span className="text-3xl font-black text-text-main">{flowers.length}</span>
             <span className="text-sm font-bold text-primary">+2%</span>
           </div>
           <div className="w-full bg-background-light h-1.5 rounded-full mt-2 overflow-hidden">
